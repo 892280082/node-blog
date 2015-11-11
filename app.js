@@ -8,6 +8,7 @@ var routes = require('./routes/index');
 var setttings = require('./settings');
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
+var flash = require('connect-flash');
 var app = express();
 
 
@@ -18,6 +19,7 @@ app.set("port",3000);
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(flash());
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
