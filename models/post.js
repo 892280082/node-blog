@@ -1,4 +1,5 @@
-var mongodb = require('./db');
+var mongodb = require('./db'),
+	markdown = require('markdown').markdown;
 
 function Post(name,title,post){
 	this.name = name;
@@ -67,6 +68,9 @@ Post.prototype.save = function(callback){
 						if(err){
 							return callbak(err);
 						}
+						docs.forEach(function(doc){
+							doc.post = markdown.toHTML(doc.post);
+						})
 						callbak(null,docs);
 					});
 			})
