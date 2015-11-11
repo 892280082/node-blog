@@ -6,7 +6,6 @@ function Post(name,title,post){
 	this.post = post;
 }
 
-
 module.exports = Post;
 
 Post.prototype.save = function(callback){
@@ -44,6 +43,7 @@ Post.prototype.save = function(callback){
 			})
 		})
 	})
+}
 
 	Post.get = function(name,callbak){
 		mongodb.open(function(err,db){
@@ -59,6 +59,7 @@ Post.prototype.save = function(callback){
 				if(name){
 					query.name = name;
 				}
+				//根据query对象查询文章
 				collection.find(query).sort({
 					time:-1
 					}).toArray(function(err,docs){
@@ -71,6 +72,6 @@ Post.prototype.save = function(callback){
 			})
 		});
 	}
-}
+
 
 
