@@ -23,7 +23,7 @@ module.exports = function(app){
 
 	app.get('/',checkIsLogin)
 	app.get('/',function(req,res){
-		Post.get(null,function(err,posts){
+		Post.getAll(null,function(err,posts){
 			if(err){
 				posts = [];
 			}
@@ -127,7 +127,7 @@ module.exports = function(app){
 
 	app.get('/post',checkIsLogin);
 	app.get('/post',function(req,res){
-		Post.get(null,function(err,posts){
+		Post.getAll(null,function(err,posts){
 			if(err){
 				posts = [];
 			}
@@ -182,6 +182,51 @@ module.exports = function(app){
 	app.post('/upload',function(req,res){
 		req.flash('success','文件上传成功！');
 		res.redirect('/upload');
+	});
+
+	app.get('/u/:name',function(req,res){
+		User.get(req.params.name,function(err,user){
+			if(!user){
+				req.flash('error','用户不存在');
+				return res.redirect('/');
+			}
+			Post.getAll(user.name,function(err,posts){
+				if(err){
+					req.flash('error',err);
+					return res.redirect('/');
+				}
+				var success = req.flash('success').toString(),
+					error = req.flash('error').toString();
+				res.render('user',{
+					title:user.name,
+					posts:posts,
+					user:req.session.user,
+					success:success,
+					error:error,
+				});
+			});
+
+		});
+	});
+
+	app.get('/u/:name/:day/:title',function(req,res){
+		Post.getOne(req.params.name,req.params.day,req.params.title,function(err,post){
+			if(err){
+				req.flash('error',err);
+				return res.redirect('/');
+			}
+			var success = req.flash('success').toString(),
+				error = req.flash('error').toString();
+			res.render('article',{
+				title:req.params.title,
+				post:post,
+				user:req.session.user,
+				success:success,
+				error:error
+			});
+
+		});
+
 	});
 
 

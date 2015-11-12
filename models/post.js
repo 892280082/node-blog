@@ -46,36 +46,67 @@ Post.prototype.save = function(callback){
 	})
 }
 
-	Post.get = function(name,callbak){
-		mongodb.open(function(err,db){
+Post.getAll = function(name,callbak){
+	mongodb.open(function(err,db){
+		if(err){
+			return callback(err);
+		}
+		db.collection('post',function(err,collection){
 			if(err){
+				mongodb.close();
 				return callback(err);
 			}
-			db.collection('post',function(err,collection){
-				if(err){
+			var query = {};
+			if(name){
+				query.name = name;
+			}
+			//根据query对象查询文章
+			collection.find(query).sort({
+				time:-1
+				}).toArray(function(err,docs){
 					mongodb.close();
+					if(err){
+						return callbak(err);
+					}
+					docs.forEach(function(doc){
+						doc.post = markdown.toHTML(doc.post);
+					})
+					callbak(null,docs);
+				});
+		})
+	});
+}
+
+Post.getOne = function(name,day,title,callback){
+	mongodb.open(function(err,db){
+		if(err){
+			return callback(err);
+		}
+		db.collection("post",function(err,collection){
+			if(err){
+				mongodb.close();
+				return callback(err);
+			}
+			var query = {
+				'name':name,
+				'time.day':day,
+				'title':title
+			}
+			console.log('query',query);
+			collection.findOne(query
+				,function(err,doc){
+				mongodb.close();
+				if(err){
 					return callback(err);
 				}
-				var query = {};
-				if(name){
-					query.name = name;
-				}
-				//根据query对象查询文章
-				collection.find(query).sort({
-					time:-1
-					}).toArray(function(err,docs){
-						mongodb.close();
-						if(err){
-							return callbak(err);
-						}
-						docs.forEach(function(doc){
-							doc.post = markdown.toHTML(doc.post);
-						})
-						callbak(null,docs);
-					});
+				doc.post = markdown.toHTML(doc.post);
+				callback(null,doc);
 			})
-		});
-	}
+		})
+	})
+
+
+}
 
 
 
