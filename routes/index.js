@@ -226,9 +226,53 @@ module.exports = function(app){
 			});
 
 		});
-
 	});
 
+	app.get('/edit/:name/:day/:title',checkIsLogin);
+	app.get('/edit/:name/:day/:title',function(req,res){
+		var currentUser = req.session.user;
+		Post.edit(currentUser.name,req.params.day,req.params.title,function(err,post){
+			if(err){
+				req.flash('error',err);
+				return res.redirect('back');
+			}
+			var success = req.flash('success').toString(),
+				error = req.flash('error').toString();
+			res.render('edit',{
+				title:'edit',
+				post:post,
+				user:req.session.user,
+				success:success,
+				error:error
+			})
+		})
+	});
 
+	app.post('/edit/:name/:day/:title',checkIsLogin);
+	app.post('/edit/:name/:day/:title',function(req,res){
+		var user = req.session.user;
+		Post.update(user.name,req.params.day,req.params.title,req.body.post,function(err){
+			var url = encodeURI('/u'+'/'+req.params.name+'/'+req.params.day+'/'+req.params.title);
+			if(err){
+				req.falsh('error','sorry ,edit court error!');
+				return res.redirect(url);
+			}
+			req.flash('success','edit ok!');
+			res.redirect(url);
+		});
+	});
+
+	app.get('/remove/:name/:day/:title',checkIsLogin);
+	app.get('/remove/:name/:day/:title',function(req,res){
+		var user = req.session.user;
+		Post.remove(user.name,req.params.day,req.params.title,function(err){
+			if(err){
+				req.flash('error','sorry remove article coure error!');
+				res.redirect('/');
+			}
+			req.flash('success','remove success!');
+			res.redirect('/');
+		});
+	});
 
 }

@@ -92,7 +92,6 @@ Post.getOne = function(name,day,title,callback){
 				'time.day':day,
 				'title':title
 			}
-			console.log('query',query);
 			collection.findOne(query
 				,function(err,doc){
 				mongodb.close();
@@ -104,9 +103,88 @@ Post.getOne = function(name,day,title,callback){
 			})
 		})
 	})
-
-
 }
 
+Post.edit = function(name,day,title,callback){
+	mongodb.open(function(err,db){
+		if(err){
+			return callback(err);
+		}
+		db.collection("post",function(err,collection){
+			if(err){
+				mongodb.close();
+				return callback(err);
+			}
+			var query = {
+				'name':name,
+				'time.day':day,
+				'title':title
+			}
+			collection.findOne(query
+				,function(err,doc){
+				mongodb.close();
+				if(err){
+					return callback(err);
+				}
+				callback(null,doc);
+			})
+		})
+	})
+}
 
+Post.update = function(name,day,title,post,callback){
+	mongodb.open(function(err,db){
+		if(err){
+			return callback(err);
+		}
+		db.collection('post',function(err,collection){
+			if(err){
+				mongodb.close();
+				return callback(err);
+			}
+			var query = {
+				'name':name,
+				'time.day':day,
+			}
+			collection.update(query,{
+					$set:{
+						post:post
+					}
+			},function(err){
+				mongodb.close();
+				if(err){
+					return callback(err);
+				}
+				callback(null);
+			});
+		});
+
+	});
+}
+
+Post.remove = function(name,day,title,callback){
+	mongodb.open(function(err,db){
+		if(err){
+			return callback(err);
+		}
+		db.collection('post',function(err,collection){
+			if(err){
+				mongodb.close();
+				return callback(err);
+			}
+			var query = {
+				'name':name,
+				'time.day':day,
+				'title':title
+			}
+			collection.remove(query,{w:1},function(err){
+				mongodb.close();
+				if(err){
+					return callback(err);
+				}
+				callback(null);
+			});
+		});
+	});
+}
 
