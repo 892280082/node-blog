@@ -197,3 +197,39 @@ Post.remove = function(name,day,title,callback){
 	});
 }
 
+Post.getTen = function(name,page,callback){
+	mongodb.open(function(err,db){
+		if(err){
+			return callback(err);
+		}
+		db.collection('post',function(err,collection){
+			if(err){
+				mongodb.close();
+				return callback(err);
+			}
+			var query = {};
+			if(name){
+				query.name = name;
+			}
+			collection.count(query,function(err,total){
+				collection.find(query,{
+					skip:(page -1)*2,
+					limit:2
+				}).sort({
+					time:-1
+				}).toArray(function(err,docs){
+					mongodb.close();
+					if(err){
+						return callback(err);
+					}
+					//console.log("postjs 228",docs,total);
+					docs.forEach(function(doc){
+						doc.post = markdown.toHTML(doc.post);
+					});
+					callback(null,docs,total);
+				})
+			});
+		})
+	});
+}
+
