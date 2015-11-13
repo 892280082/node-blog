@@ -308,4 +308,25 @@ module.exports = function(app){
 		});
 	});
 
+	app.get('/archive',checkIsLogin);
+	app.get('/archive',function(req,res){
+		Post.getArchive(function(err,posts){
+			if(err){
+				req.flash('error',err);
+				return res.redirect('/');
+			}
+			console.log("indexJS 323",posts);
+			var success = req.flash('success').toString(),
+				error = req.flash('error').toString();
+			res.render('archive',{
+				title:'save cord',
+				posts:posts,
+				user:req.session.user,
+				success:success,
+				error:error
+			})
+		});
+
+	});
+
 }
