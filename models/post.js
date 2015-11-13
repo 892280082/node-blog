@@ -5,6 +5,7 @@ function Post(name,title,post){
 	this.name = name;
 	this.title = title;
 	this.post = post;
+	comments : []
 }
 
 module.exports = Post;
@@ -23,7 +24,8 @@ Post.prototype.save = function(callback){
 		name:this.name,
 		time:time,
 		title:this.title,
-		post:this.post
+		post:this.post,
+		comments : []
 	}
 
 	mongodb.open(function(err,db){
@@ -41,9 +43,9 @@ Post.prototype.save = function(callback){
 					return callback(err);
 				}
 				callback(null);
-			})
-		})
-	})
+			});
+		});
+	});
 }
 
 Post.getAll = function(name,callbak){
@@ -98,7 +100,14 @@ Post.getOne = function(name,day,title,callback){
 				if(err){
 					return callback(err);
 				}
-				doc.post = markdown.toHTML(doc.post);
+				if(doc){
+					console.log('postjs 104',doc);
+					doc.post = markdown.toHTML(doc.post);
+					doc.comments.forEach(function(comment){
+						comment.content = markdown.toHTML(comment.content);
+					})
+				}
+				console.log('postjs 109',doc.comments);
 				callback(null,doc);
 			})
 		})
