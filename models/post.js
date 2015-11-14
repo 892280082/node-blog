@@ -321,3 +321,35 @@ Post.getTag = function(tag,callback){
 	});
 }
 
+Post.search = function(keyWord,callback){
+	mongodb.open(function(err,db){
+		if(err){
+			return callback(err);
+		}
+		db.collection('post',function(err,collection){
+			if(err){
+				mongodb.close();
+				return callback(err);
+			}
+			var pattern = new RegExp(keyWord,'i');
+			var query = {
+				'title':pattern
+			}
+			var include = {
+				'name':1,
+				'time':1,
+				'title':1
+			}
+			collection.find(query,include).sort({
+				time:-1
+			}).toArray(function(err,docs){
+				mongodb.close();
+				if(err){
+					return callback(err);
+				}
+				callback(null,docs);
+			});
+		});
+	});
+};
+

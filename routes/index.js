@@ -22,6 +22,7 @@ function checkIsNotLogin(req,res,next){
 
 module.exports = function(app){
 
+
 	app.get('/',checkIsLogin)
 	app.get('/',function(req,res){
 		var page = req.query.p ? parseInt(req.query.p) :1;
@@ -370,6 +371,35 @@ module.exports = function(app){
 		});
 	});
 
+	app.get('/search',function(req,res){
+		Post.search(req.query.keyword,function(err,posts){
+			if(err){
+				req.flash('error','sorry,search course error!');
+				console.log('indexJS 377',err);
+			}
+			var success = req.flash('success').toString(),
+				error   = req.flash('error').toString();
+				console.log('indexJS 381',posts);
+				res.render('search',{
+					title:"SEARCH"+req.query.keyword,
+					posts:posts,
+					user:req.session.user,
+					success:success,
+					error:error
+				});
+		});
+	});
+
+	app.get('/links',function(req,res){
+		var success = req.flash('success').toString(),
+			error   = req.flash('error').toString();
+		res.render('links',{
+			title:'友情链接',
+			user:req.session.user,
+			success:success,
+			error:error
+		});
+	});
 
 
 }
