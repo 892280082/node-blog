@@ -27,7 +27,8 @@ Post.prototype.save = function(callback){
 		title:this.title,
 		tags:this.tags,
 		post:this.post,
-		comments : []
+		comments : [],
+		pv:0
 	}
 
 
@@ -99,19 +100,24 @@ Post.getOne = function(name,day,title,callback){
 			}
 			collection.findOne(query
 				,function(err,doc){
-				mongodb.close();
 				if(err){
 					return callback(err);
 				}
 				if(doc){
-					console.log('postjs 104',doc);
+					collection.update(query,{
+							$inc:{"pv":1}
+					},function(err){
+							mongodb.close();
+							if(err){
+								return callback(err);
+							}
+					});
 					doc.post = markdown.toHTML(doc.post);
 					doc.comments.forEach(function(comment){
 						comment.content = markdown.toHTML(comment.content);
-					})
+					});
+					callback(null,doc);
 				}
-				console.log('postjs 109',doc.comments);
-				callback(null,doc);
 			})
 		})
 	})

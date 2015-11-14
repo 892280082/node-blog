@@ -224,6 +224,7 @@ module.exports = function(app){
 		Post.getOne(req.params.name,req.params.day,req.params.title,function(err,post){
 			if(err){
 				req.flash('error',err);
+				console.log("indexJs 227  course error!",err);
 				return res.redirect('/');
 			}
 			var success = req.flash('success').toString(),
