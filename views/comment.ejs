@@ -1,5 +1,8 @@
 <br>
 <% post.comments.forEach(function(comment,index){ %>
+	<div style="padding-left:4em">
+		<p><img src="<%=comment.head%>" alt="" class="l_head"><%=comment.name%></img></p>
+	</div>
 	<p>回复人:<a href="<%= comment.website %>"><%= comment.website %></a></p>
 	<span class="info">回复时间:<%= comment.time %></span>
 	<p><%- comment.content %></p>
