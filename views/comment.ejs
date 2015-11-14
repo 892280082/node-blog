@@ -1,7 +1,7 @@
 <br>
 <% post.comments.forEach(function(comment,index){ %>
-	<p>user:<a href="<%= comment.website %>"><%= comment.website %></a></p>
-	<span class="info">return time:<%= comment.time %></span>
+	<p>回复人:<a href="<%= comment.website %>"><%= comment.website %></a></p>
+	<span class="info">回复时间:<%= comment.time %></span>
 	<p><%- comment.content %></p>
 <% })  %>
 <form method="post">

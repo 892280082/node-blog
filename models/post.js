@@ -1,15 +1,16 @@
 var mongodb = require('./db'),
 	markdown = require('markdown').markdown;
 
-function Post(name,title,post){
+function Post(name,title,tags,post){
 	this.name = name;
 	this.title = title;
+	this.tags = tags;
 	this.post = post;
 	comments : []
 }
 
 module.exports = Post;
-
+	
 Post.prototype.save = function(callback){
 	var date = new Date();
 
@@ -24,9 +25,11 @@ Post.prototype.save = function(callback){
 		name:this.name,
 		time:time,
 		title:this.title,
+		tags:this.tags,
 		post:this.post,
 		comments : []
 	}
+
 
 	mongodb.open(function(err,db){
 		if(err){
@@ -259,4 +262,56 @@ Post.getArchive = function(callback){
 		});
 	});
 };
+
+Post.getTags = function(callback){
+	mongodb.open(function(err,db){
+		if(err){
+			return callback(err);
+		}
+		db.collection('post',function(err,collection){
+			if(err){
+				mongodb.close();
+				return callback(err);
+			}
+			collection.distinct('tags',function(err,docs){
+				mongodb.close();
+				if(err){
+					return callback(err);
+				}
+				callback(null,docs);
+			});
+		});
+	});
+}
+
+Post.getTag = function(tag,callback){
+	mongodb.open(function(err,db){
+		if(err){
+			callback(err);
+		}
+		db.collection('post',function(err,collection){
+			if(err){
+				mongodb.close();
+				return callback(err);
+			}
+			var query = {
+				"tags":tag
+			}
+			var include ={
+				"name":1,
+				"time":1,
+				"title":1
+			}
+			collection.find(query,include).sort({
+				"time":-1
+			}).toArray(function(err,docs){
+				mongodb.close();
+				if(err){
+					return callback(err);
+				}
+				callback(null,docs);
+			});
+		});
+	});
+}
 
