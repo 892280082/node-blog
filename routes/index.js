@@ -7,7 +7,7 @@ function checkIsLogin(req,res,next){
 	if(!req.session.user){
 		req.flash('error','not login');
 		res.redirect('/login');
-	}
+	}a
 	next();
 }
 
@@ -316,6 +316,31 @@ module.exports = function(app){
 			res.redirect('/');
 		});
 	});
+
+	app.get('/reprint/:name/:day:title',checkIsLogin);
+	app.get('reprint/:name/:day:title',function(req,res){
+		Post.edit(req.params.name,req.params.day,req.params.title,function(err,post){
+			if(err){
+				req.flash('error',err);
+				return res.redirect('back');
+			};
+			var currentUser = req.session.user,
+				reprint_from = {name:post.name,day:post.time.day,title:post.title},
+				reprint_to   = { name:currentUser.name,head:currentUser.head};
+			Post.reprint(reprint_from,reprint_to,function(err,post){
+				if(err){
+					req.flash('error',err);
+					return res.redirect('back');
+				}
+				req.flash('success','转载成功!');
+				var url = encodeURI('/u/'+post.name+'/'+post.time.day+'/'+post.title);
+				res.redirect(url);
+			});
+		});
+
+	});
+
+
 
 	app.get('/archive',checkIsLogin);
 	app.get('/archive',function(req,res){

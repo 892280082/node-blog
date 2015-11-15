@@ -7,7 +7,7 @@ function Post(name,head,title,tags,post){
 	this.title = title;
 	this.tags = tags;
 	this.post = post;
-	comments : []
+	comments = []
 }
 
 module.exports = Post;
@@ -30,6 +30,7 @@ Post.prototype.save = function(callback){
 		tags:this.tags,
 		post:this.post,
 		comments : [],
+		reprint_info:{},
 		pv:0
 	}
 
@@ -354,4 +355,85 @@ Post.search = function(keyWord,callback){
 		});
 	});
 };
+
+Post.reprint = function(reprint_from,reprint_to,callback){
+	mongodb.open(function(err,db){
+		if(err){
+			return callback(err);
+		}
+		db.collection('post',function(err,collection){
+			if(err){
+				mongodb.close();
+				return callback(err);
+			}
+			var query = {
+				'name':reprint_from.name,
+				'time.day':reprint_from.day,
+				'title':reprint_from.title
+			}
+			collection.findOne(query,function(err,doc){
+				if(err){
+					mongodb.close();
+					return callback(err);
+				}
+				var date = new Date();
+				var time = {
+					date:date,
+					year:date.getFullYear(),
+					month:date.getFullYear()+'-'+(date.getMonth()+1),
+					day:date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate(),
+				}
+				delete doc._id;
+				doc.name = reprint_to.name;
+				doc.head = reprint_to.head;
+				doc.time = time;
+				doc.title = (doc.title.search(/[转载]/) > -1) ? doc.title : "[转载]" +doc.title;
+				doc.comments = [];
+				doc.reprint_info = {reprint_from:reprint_form};
+				doc.pv = 0;
+
+				collection.update(query,{
+					$push:{
+						"reprint_info.reprint_to":{
+							'name':doc.name,
+							'day':time.day,
+							'title':doc.title							
+						}
+					}
+				},function(err){
+					if(err){
+						mongodb.close();
+						return callback(err);
+					}
+					collection.insert(doc,{
+						safe:true
+					},function(err,doc){
+						if(err){
+							mongodb.close();
+							return callback(err);
+						}
+						callback(null,doc[0]);
+					});
+				});
+			});
+		});
+	});
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
