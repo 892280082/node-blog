@@ -8,11 +8,11 @@
 	<%	//用户存在 且当前用户不是文章的作者  	%>
 	<%	if(user && (user.name != post.name)){ 	%>
 	<%	//文章被转载过，当前用户是文章的最初作者 	%>
-	<%		if((post.reprint_info.reprint_from != underfined) && (user.name == post.reprint_info.reprint_from.name ) ){ 	%>
+	<%		if((post.reprint_info.reprint_from != undefined) && (user.name == post.reprint_info.reprint_from.name ) ){ 	%>
 	<%				flag = 0; 	%>
 	<%		}	%>
 	<%		//该文章被其他人转载过，判断当前用户是否转载过文章 	%>
-	<%		if((post.reprint_info.reprint_to != underfined )){ %>
+	<%		if((post.reprint_info.reprint_to != undefined )){ %>
 	<%			post.reprint_info.reprint_to.forEach(function(reprint_to,index){ %>
 	<%				if(user.name == reprint_to.name){ 	%>
 	<%					flag = 0; 	%>

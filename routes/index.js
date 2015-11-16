@@ -7,7 +7,7 @@ function checkIsLogin(req,res,next){
 	if(!req.session.user){
 		req.flash('error','not login');
 		res.redirect('/login');
-	}a
+	}
 	next();
 }
 
@@ -42,8 +42,8 @@ module.exports = function(app){
 				isFirstPage:(page -1) == 0,
 				isLastPage:(page -1)*10 + posts.length == total,
 				error:error
-			})
-		})	
+			});
+		});	
 	});
 
 	app.get('/reg',checkIsNotLogin);
@@ -317,8 +317,9 @@ module.exports = function(app){
 		});
 	});
 
-	app.get('/reprint/:name/:day:title',checkIsLogin);
-	app.get('reprint/:name/:day:title',function(req,res){
+	app.get('/reprint/:name/:day/:title',checkIsLogin);
+	app.get('/reprint/:name/:day/:title',function(req,res){
+		console.log("indexJs 322  run to this");
 		Post.edit(req.params.name,req.params.day,req.params.title,function(err,post){
 			if(err){
 				req.flash('error',err);

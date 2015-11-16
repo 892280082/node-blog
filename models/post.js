@@ -87,6 +87,7 @@ Post.getAll = function(name,callbak){
 }
 
 Post.getOne = function(name,day,title,callback){
+	console.log('PostJs',name,day,title);
 	mongodb.open(function(err,db){
 		if(err){
 			return callback(err);
@@ -106,24 +107,28 @@ Post.getOne = function(name,day,title,callback){
 				if(err){
 					return callback(err);
 				}
+				console.log("postJS 109",doc);
 				if(doc){
 					collection.update(query,{
 							$inc:{"pv":1}
 					},function(err){
-							mongodb.close();
-							if(err){
-								return callback(err);
-							}
+						mongodb.close();
+						if(err){
+							return callback(err);
+						}
+						doc.post = markdown.toHTML(doc.post);
+						doc.comments.forEach(function(comment){
+							comment.content = markdown.toHTML(comment.content);
+						});
+						callback(null,doc);
 					});
-					doc.post = markdown.toHTML(doc.post);
-					doc.comments.forEach(function(comment){
-						comment.content = markdown.toHTML(comment.content);
-					});
-					callback(null,doc);
+				}else{
+					mongodb.close();
+					return callback(null,null);
 				}
-			})
-		})
-	})
+			});
+		});
+	});
 }
 
 Post.edit = function(name,day,title,callback){
@@ -239,9 +244,9 @@ Post.getTen = function(name,page,callback){
 						doc.post = markdown.toHTML(doc.post);
 					});
 					callback(null,docs,total);
-				})
+				});
 			});
-		})
+		});
 	});
 }
 
@@ -389,7 +394,7 @@ Post.reprint = function(reprint_from,reprint_to,callback){
 				doc.time = time;
 				doc.title = (doc.title.search(/[转载]/) > -1) ? doc.title : "[转载]" +doc.title;
 				doc.comments = [];
-				doc.reprint_info = {reprint_from:reprint_form};
+				doc.reprint_info = {reprint_from:reprint_from};
 				doc.pv = 0;
 
 				collection.update(query,{
