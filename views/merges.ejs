@@ -4,6 +4,11 @@
 	<meta charset="UTF-8">
 	<title>merges</title>
 </head>
+<style>
+	h1 {
+		text-align: center;
+	}	
+</style>
 <body>
  	<h1 style="algin:center;">merges</h1>
  	<form method="POST">
@@ -13,5 +18,23 @@
  		<span>address<input type="text" name="address"></span><br>
  		<span><input type="submit"  value="save"></span><br>
  	</form>
+ 	<hr>
+ 	<h1>房价列表</h1>
+ 	<table>
+ 		<tr>
+ 			<td>编号</td>
+ 			<td>种类</td>
+ 			<td>名称</td>
+ 			<td>地点</td>
+ 		</tr>
+ 	<%	homes.forEach(function(home,index){  %>
+			<tr>
+				<td><%=  %></td>
+				<td><%= home.type %></td>
+				<td><%= home.title %></td>
+				<td><%= home.address %></td>
+			</tr>
+ 	<%	});   %>
+ 	</table>
 </body>
 </html>

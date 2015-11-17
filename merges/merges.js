@@ -1,9 +1,9 @@
 var DateSet_Flag = 'MERGE_TYPE_|_';
 var DateSet = {
 	'flag':DateSet_Flag,
-	'string':DateSet_Flag+'String',
-	'integer':DateSet_Flag+'Integer',
-	'date':DateSet_Flag+'Date'
+	'String':DateSet_Flag+'String',
+	'Number':DateSet_Flag+'Number',
+	'Date':DateSet_Flag+'Date'
 }
 
 function judgeParam(param,pojo,p,type){
@@ -23,12 +23,12 @@ function copyParam(param,pojo,show){
 		if(typeof pojo[p]  == "string" &&  pojo[p].indexOf(DateSet.flag) >= 0 ){
 			var flag = false;
 			//String 
-			if(judgeParam(param,pojo,p,DateSet.string)){
+			if(judgeParam(param,pojo,p,DateSet.String)){
 				pojo[p] =  param[p];
 				flag = true;
 			}
 			//Integer
-			if(judgeParam(param,pojo,p,DateSet.integer)){
+			if(judgeParam(param,pojo,p,DateSet.Number)){
 				try{
 					pojo[p] =   Number(param[p]);
 					flag = true;
@@ -37,7 +37,7 @@ function copyParam(param,pojo,show){
 				}
 			}
 			//Date
-			if(judgeParam(param,pojo,p,DateSet.date)){
+			if(judgeParam(param,pojo,p,DateSet.Date)){
 				var timeStr = param[p];
 				timeStr = timeStr.replace(/-/g,"/");
 				pojo[p] =  new Date(timeStr);
@@ -51,8 +51,8 @@ function copyParam(param,pojo,show){
 	return pojo;
 }
 
-function merge(req,pojo){
-	var temp = pojo.constructor();
+function merge(req,constructor){
+	var pojo = new constructor();
 	var option = {
 		'body':req.body,
 		'param':req.param,
@@ -63,17 +63,19 @@ function merge(req,pojo){
 	for(var o in option){
 		option_index++;
 		if(typeof option[o] != "undefined"){
-			temp = copyParam(option[o],pojo,option_length == option_index);
+			 copyParam(option[o],pojo,option_length == option_index);
 		}
 	}
-	return temp;
+	return pojo;
 }
 
-function Merges(){
-	this.string = DateSet.string;
-	this.integer = DateSet.integer;
-	this.date = DateSet.date;
-	this.copy = merge;
+
+var merges = {
+	'String':DateSet.String,
+	'Number':DateSet.Number,
+	'Date':DateSet.Date,
+	'copy':merge
 }
 
-module.exports = new Merges();
+module.exports = merges;
+

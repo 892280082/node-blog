@@ -7,14 +7,21 @@ module.exports = function(app){
 	});
 
 	app.post(name_space+'/index',function(req,res){
-		var home = merges.copy(req,new Home());
-		Home.save(home,function(err,doc){
+		var home = merges.copy(req,Home);
+		home.save(home,function(err,doc){
 			if(err){
 				res.redirect('back');
 			}
-			res.send(doc);
+			Home.getAll(function(err,homes){
+				if(err){
+					res.redirect('back');
+				}
+				res.render('merges',{
+					homes:homes
+				});
+			});
 		});
 	});
-}
 
+}
 
