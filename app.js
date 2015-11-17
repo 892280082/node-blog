@@ -5,6 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var routes = require('./routes/index');
+var megerRoute = require('./routes/users');
 var setttings = require('./settings');
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
@@ -64,6 +65,7 @@ app.use(session({
   });
 
   routes(app);
+  megerRoute(app);
 
   app.use(function(req,res){
     res.render('404');

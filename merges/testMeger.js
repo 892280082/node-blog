@@ -1,4 +1,4 @@
-var megers = require('./megers.js');
+var megers = require('./merges.js');
 
 var req = {
 	query:{
@@ -24,7 +24,11 @@ function User(name,gender,old){
 	this.old = megers.integer;
 	this.time = megers.date;
 	this.address = megers.string;
+	this.do = function(){
+		console.log("my name is "+this.name);
+	}
 }
 
 var user =  megers.copy(req,new User());
 console.log(user);
+user.do();
