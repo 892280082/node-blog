@@ -45,3 +45,5 @@
 127.0.0.1 - - [Tue, 17 Nov 2015 09:21:20 GMT] "POST /merges/index HTTP/1.1" 200 59 "http://localhost:3000/merges/index" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:41.0) Gecko/20100101 Firefox/41.0"
 127.0.0.1 - - [Tue, 17 Nov 2015 09:21:25 GMT] "GET /merges/index HTTP/1.1" 200 484 "-" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:41.0) Gecko/20100101 Firefox/41.0"
 127.0.0.1 - - [Tue, 17 Nov 2015 09:21:39 GMT] "POST /merges/index HTTP/1.1" 200 114 "http://localhost:3000/merges/index" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:41.0) Gecko/20100101 Firefox/41.0"
+127.0.0.1 - - [Tue, 17 Nov 2015 09:40:27 GMT] "GET /merges/index HTTP/1.1" 200 484 "-" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:41.0) Gecko/20100101 Firefox/41.0"
+127.0.0.1 - - [Tue, 17 Nov 2015 09:40:39 GMT] "POST /merges/index HTTP/1.1" 500 1364 "http://localhost:3000/merges/index" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:41.0) Gecko/20100101 Firefox/41.0"

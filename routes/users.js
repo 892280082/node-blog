@@ -8,7 +8,12 @@ module.exports = function(app){
 
 	app.post(name_space+'/index',function(req,res){
 		var home = merges.copy(req,new Home());
-		res.send(home);
+		Home.save(home,function(err,doc){
+			if(err){
+				res.redirect('back');
+			}
+			res.send(doc);
+		});
 	});
 }
 
