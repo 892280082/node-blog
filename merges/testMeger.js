@@ -18,12 +18,12 @@ var req = {
 }
 
 function User(name,gender,old){
-	this.name = megers.String;
-	this.gender = megers.String;
-	this.like = megers.String;
-	this.old = megers.Number;
-	this.time = megers.Date;
-	this.address = megers.String;
+	this.name = String;
+	this.gender = String;
+	this.like = String;
+	this.old = Number;
+	this.time = Date;
+	this.address = String;
 	this.do = function(){
 		console.log("my name is "+this.name);
 	}

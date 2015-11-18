@@ -1,43 +1,15 @@
-var DateSet_Flag = 'MERGE_TYPE_|_';
-var DateSet = {
-	'flag':DateSet_Flag,
-	'String':DateSet_Flag+'String',
-	'Number':DateSet_Flag+'Number',
-	'Date':DateSet_Flag+'Date'
-}
-
-function judgeParam(param,pojo,p,type){
-	var flag = false;
-	if(typeof pojo[p]  != "undefined"){
-		if(pojo[p] == type){
-			if(typeof param[p] != "undefined"){
-				return true;
-			}
-		}
-	}
-	return flag;
-}
-
 function copyParam(param,pojo,show){
 	for(var p in pojo){
-		if(typeof pojo[p]  == "string" &&  pojo[p].indexOf(DateSet.flag) >= 0 ){
-			var flag = false;
-			//String 
-			if(judgeParam(param,pojo,p,DateSet.String)){
-				pojo[p] =  param[p];
+		var flag = false;
+		if(typeof param[p] != "undefined"){
+			if(pojo[p] == String){
+				pojo[p] = param[p];
 				flag = true;
 			}
-			//Integer
-			if(judgeParam(param,pojo,p,DateSet.Number)){
-				try{
-					pojo[p] =   Number(param[p]);
-					flag = true;
-				}catch(err){
-					console.log("merge_error:  "+p+"property  conver error! ");
-				}
+			if(pojo[p] == Number){
+				pojo[p] = Number(param[p]);
 			}
-			//Date
-			if(judgeParam(param,pojo,p,DateSet.Date)){
+			if(pojo[p] == Date ){
 				var timeStr = param[p];
 				timeStr = timeStr.replace(/-/g,"/");
 				pojo[p] =  new Date(timeStr);
@@ -58,8 +30,8 @@ function merge(req,constructor){
 		'param':req.param,
 		'query':req.query
 	}
-	var option_length = Object.getOwnPropertyNames(option).length;
 	var option_index = 0;
+	var option_length = Object.getOwnPropertyNames(option).length;
 	for(var o in option){
 		option_index++;
 		if(typeof option[o] != "undefined"){
@@ -72,12 +44,15 @@ function merge(req,constructor){
 	return pojo;
 }
 
+function createModel(origin,func){
+	origin.prototype._mongoose = func;
+	return origin;
+}
+
 
 var merges = {
-	'String':DateSet.String,
-	'Number':DateSet.Number,
-	'Date':DateSet.Date,
-	'copy':merge
+	'copy':merge,
+	'create':createModel
 }
 
 module.exports = merges;
