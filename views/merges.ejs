@@ -27,6 +27,7 @@
  			<td>名称</td>
  			<td>地点</td>
  		</tr>
+ 	<% if(typeof homes != "undefined"){ %>
  	<%	homes.forEach(function(home,index){  %>
 			<tr>
 				<td><%=  %></td>
@@ -35,6 +36,7 @@
 				<td><%= home.address %></td>
 			</tr>
  	<%	});   %>
+	<%  }  %>
  	</table>
 </body>
 </html>

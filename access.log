@@ -69,3 +69,8 @@
 ::1 - - [Tue, 17 Nov 2015 13:55:09 GMT] "POST /merges/index HTTP/1.1" 200 484 "http://localhost:3000/merges/index" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:42.0) Gecko/20100101 Firefox/42.0"
 ::1 - - [Tue, 17 Nov 2015 14:00:06 GMT] "POST /merges/index HTTP/1.1" 200 1675 "http://localhost:3000/merges/index" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:42.0) Gecko/20100101 Firefox/42.0"
 ::1 - - [Tue, 17 Nov 2015 14:00:44 GMT] "POST /merges/index HTTP/1.1" 200 1788 "http://localhost:3000/merges/index" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:42.0) Gecko/20100101 Firefox/42.0"
+127.0.0.1 - - [Wed, 18 Nov 2015 03:18:10 GMT] "POST /merges/index HTTP/1.1" 200 904 "http://localhost:3000/merges/index" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:41.0) Gecko/20100101 Firefox/41.0"
+127.0.0.1 - - [Wed, 18 Nov 2015 03:18:29 GMT] "POST /merges/index HTTP/1.1" 200 991 "http://localhost:3000/merges/index" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:41.0) Gecko/20100101 Firefox/41.0"
+127.0.0.1 - - [Wed, 18 Nov 2015 03:18:49 GMT] "POST /merges/index HTTP/1.1" 200 1096 "http://localhost:3000/merges/index" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:41.0) Gecko/20100101 Firefox/41.0"
+127.0.0.1 - - [Wed, 18 Nov 2015 03:22:07 GMT] "POST /merges/index HTTP/1.1" 200 1201 "http://localhost:3000/merges/index" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:41.0) Gecko/20100101 Firefox/41.0"
+127.0.0.1 - - [Wed, 18 Nov 2015 03:22:08 GMT] "POST /merges/index HTTP/1.1" 200 1306 "http://localhost:3000/merges/index" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:41.0) Gecko/20100101 Firefox/41.0"

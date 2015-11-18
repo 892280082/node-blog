@@ -16,12 +16,12 @@ module.exports = function(app){
 				if(err){
 					res.redirect('back');
 				}
+				console.log(homes);
 				res.render('merges',{
 					homes:homes
 				});
 			});
 		});
 	});
-
 }
 
