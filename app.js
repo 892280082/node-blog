@@ -63,7 +63,8 @@ app.use(session({
   });
 
   routes(app);
-  megerRoute(app);
+  //megerRoute(app);
+  app.use('/merges',require('./routes/merges'));
 
   app.use(function(req,res){
     res.render('404');

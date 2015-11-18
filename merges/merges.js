@@ -59,12 +59,15 @@ function merge(req,constructor){
 		'query':req.query
 	}
 	var option_length = Object.getOwnPropertyNames(option).length;
-	var option_index = 1;
+	var option_index = 0;
 	for(var o in option){
 		option_index++;
 		if(typeof option[o] != "undefined"){
 			 copyParam(option[o],pojo,option_length == option_index);
 		}
+	}
+	if(typeof pojo._mongoose == "function"){
+		return new pojo._mongoose(pojo);
 	}
 	return pojo;
 }
