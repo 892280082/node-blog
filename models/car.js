@@ -20,23 +20,52 @@ module.exports = export_car;
 
 var req = {
 	query:{
-		name:"sdfsdf",
 		head:'http://www.baidu.com'
 	},
 	param:{
-		name:'luoli',
 		password:'passw0rd'
 	},	
 	body:{
-		name:'shitailong',
+		
 		email:'892323@qq.com',
+		name:'shitailong',
 		time:'2014-12-1'
 	}
 }
 
 var car = merges.copy(req,export_car);
-car.save();
 console.log(car);
+export_car.find(null,function(err,docs){
+	console.log(docs);
+});
+
+//car.save();
+
+//add
+// car.save(function(err){
+// 	if(err){
+// 		console.log("save",err);
+// 	}
+// });
+//update
+// var query = {
+// 	name:'shitailong'
+// }
+// car.constructor.update(query,function(err,docs){
+// 	console.log(docs);
+// });
+//remove
+// var query = {
+// 	name:'shitailong'
+// }
+// car.constructor.remove(query,function(err,docs){
+// 	console.log(docs);
+// })
+// //seach
+// car.constructor.find(null,function(err,docs){
+// 	console.log(docs);
+// });
+
 
 
 

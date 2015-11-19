@@ -24,7 +24,7 @@ function copyParam(param,pojo,show){
 }
 
 function merge(req,constructor){
-	var pojo = new constructor();
+	var pojo = new constructor._pojo_constructor();
 	var option = {
 		'body':req.body,
 		'param':req.param,
@@ -38,15 +38,12 @@ function merge(req,constructor){
 			 copyParam(option[o],pojo,option_length == option_index);
 		}
 	}
-	if(typeof pojo._mongoose == "function"){
-		return new pojo._mongoose(pojo);
-	}
-	return pojo;
+	return constructor(pojo);
 }
 
 function createModel(origin,func){
-	origin.prototype._mongoose = func;
-	return origin;
+	func._pojo_constructor = origin;
+	return func;
 }
 
 
